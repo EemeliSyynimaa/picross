@@ -1,18 +1,24 @@
 import pyglet
 
-class Engine:
+import scene_manager
+
+class Engine(pyglet.window.Window):
     """ The main engine class. """
-    def __init__(self):
-        """ Initializes the engine. """
+    def __init__(self, *args, **kwargs):
+        super(Engine, self).__init__(*args, **kwargs)
+        self.scene_manager = scene_manager.SceneManager()
+        self.fps = pyglet.clock.ClockDisplay()
         
-        self.screen = pyglet.window.Window(width=1280, height=720)
+        pyglet.clock.schedule_interval(self.update, 1/120.0)
         
         pyglet.app.run()
     
-    def update(self):
-        """ Updates all game actions. """
+    def update(self, dt):
         pass
     
-    def draw(self):
-        """ Draws all the stuff. """
-        pass
+    def on_draw(self):
+        self.clear()
+        
+        self.scene_manager.on_draw()
+        
+        self.fps.draw()

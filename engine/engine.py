@@ -1,14 +1,16 @@
 import pyglet
 
-from scene_manager import SceneManager
+import scene_manager
+import resource_manager
 
 class Engine(pyglet.window.Window):
     """ The main engine class. """
     def __init__(self, *args, **kwargs):
         super(Engine, self).__init__(*args, **kwargs)
         
-        self.scene_manager = SceneManager(engine=self)
+        self.scene_manager = scene_manager.SceneManager(engine=self)
         self.fps = pyglet.clock.ClockDisplay()
+        self.resource_manager = resource_manager.ResourceManager()
         
         pyglet.clock.schedule_interval(self.update, 1/120.0)
         

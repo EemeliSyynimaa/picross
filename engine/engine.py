@@ -10,7 +10,6 @@ class Engine(pyglet.window.Window):
         
         self.scene_manager = scene_manager.SceneManager(engine=self)
         self.fps = pyglet.clock.ClockDisplay()
-        self.resource_manager = resource_manager.ResourceManager()
         
         pyglet.clock.schedule_interval(self.update, 1/120.0)
         

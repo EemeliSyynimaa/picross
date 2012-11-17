@@ -12,10 +12,10 @@ class ResourceManager(object):
     def load_yaml(self, location):
         temp = yaml.load(location)
                 
-        self.var[file.split(".")[0]] = {}
+        self.var[file.split('.')[0]] = {}
                 
         for key in temp.keys():
-            self.var[file.split(".")[0][key]] = temp[key]
+            self.var[file.split('.')[0][key]] = temp[key]
 
     def load_image(self, image, location=None):
         if location:

@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
+
 from engine import engine
 from scenes import game
 
@@ -16,11 +18,11 @@ class App(object):
         self.engine.run()
         
     def init_resources(self):
-        self.engine.add_resource_path("gfx")
+        self.engine.add_resource_path('gfx')
         
     def init_scenes(self):
-        self.engine.scene_manager.add_scene("game", game.Game)
-        self.engine.scene_manager.activate_scene("game", path="levels//default//1")
+        self.engine.scene_manager.add_scene('game', game.Game)
+        self.engine.scene_manager.activate_scene('game', path="levels\\default\\1")
 
         
         

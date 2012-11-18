@@ -17,10 +17,10 @@ class GameWon(scene.Scene):
         self.init_resources()
         
     def init_resources(self):
-        self.gfx_victory_image = self.resource_manager.load_image(str(self.lvl_num)+".png", 
-                                                    "levels\\"+self.campaign)
+        self.gfx.load_image(str(self.lvl_num)+".png", 
+                            "levels\\"+self.campaign)
         
     def on_draw(self):
-        x = self.screen_width/2 - self.gfx_victory_image.width/2
-        y = self.screen_height/2 - self.gfx_victory_image.height/2
-        self.gfx_victory_image.blit(x, y)
+        x = self.screen_width/2 - self.gfx[str(self.lvl_num)].width/2
+        y = self.screen_height/2 - self.gfx[str(self.lvl_num)].height/2
+        self.gfx[str(self.lvl_num)].blit(x, y)

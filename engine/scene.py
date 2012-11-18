@@ -9,7 +9,9 @@ class Scene(object):
     def __init__(self, manager):
         self.manager = manager
         self.batch = pyglet.graphics.Batch()
-        self.resource_manager = resource_manager.ResourceManager()
+        self.gfx = resource_manager.GfxManager()
+        self.sfx = resource_manager.SfxManager()
+        self.var = resource_manager.VarManager()
         
     def on_key_press(self, symbol, modifiers):
         pass

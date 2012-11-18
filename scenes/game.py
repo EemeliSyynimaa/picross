@@ -12,7 +12,7 @@ class Game(scene.Scene):
                  screen_width, screen_height):
         super(Game, self).__init__(manager)
         
-        self.level = level.Level(campaign, lvl_num, self.resource_manager, 
+        self.level = level.Level(campaign, lvl_num, self.gfx, 
                                  screen_width/2, screen_height/2)
         self.init_resources()
         

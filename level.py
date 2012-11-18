@@ -30,9 +30,9 @@ class Level(object):
         self.init_col_labels()
         
     def init_resources(self):
-        self.resource_manager.load_image('tile_painted.png')
-        self.resource_manager.load_image('tile_empty.png')
-        self.resource_manager.load_image('tile_marked.png')
+        self.gfx_tile_painted = self.resource_manager.load_image('tile_painted.png')
+        self.gfx_tile_empty = self.resource_manager.load_image('tile_empty.png')
+        self.gfx_tile_marked = self.resource_manager.load_image('tile_marked.png')
         
     def init_goal_grid(self):
         try:
@@ -216,9 +216,9 @@ class Level(object):
                 blit_y = self.y - y * self.tile_size - self.tile_size
                 
                 if self.play_grid[y][x] == "#":
-                    self.resource_manager.gfx['tile_painted'].blit(blit_x, blit_y)
+                    self.gfx_tile_painted.blit(blit_x, blit_y)
                 elif self.play_grid[y][x] == '-':
-                    self.resource_manager.gfx['tile_empty'].blit(blit_x, blit_y )
+                    self.gfx_tile_empty.blit(blit_x, blit_y )
                 elif self.play_grid[y][x] == 'X':
-                    self.resource_manager.gfx['tile_marked'].blit(blit_x, blit_y )
+                    self.gfx_tile_marked.blit(blit_x, blit_y )
         

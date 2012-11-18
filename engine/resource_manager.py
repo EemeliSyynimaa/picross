@@ -5,17 +5,18 @@ class ResourceManager(object):
     """ This class holds recources the game uses. """
 
     def __init__(self):
-        self.var = {}
-        self.gfx = {}
-        self.sfx = {}
+        pass
 
     def load_yaml(self, location):
         temp = yaml.load(location)
-                
-        self.var[file.split('.')[0]] = {}
+        
+        var = {}   
+        var[file.split('.')[0]] = {}
                 
         for key in temp.keys():
-            self.var[file.split('.')[0][key]] = temp[key]
+            var[file.split('.')[0][key]] = temp[key]
+            
+        return var
 
     def load_image(self, image, location=None):
         if location:
@@ -25,7 +26,7 @@ class ResourceManager(object):
             temp = pyglet.resource.image(image)
         
         name = image.split('.')[0]
-        self.gfx[name] = temp
+        return temp
         
     def load_media(self, sound, location=None):
         if location:
@@ -35,5 +36,5 @@ class ResourceManager(object):
             temp = pyglet.resource.media(sound)
         
         name = sound.split('.')[0]
-        self.sfx[name] = temp
+        return temp
         

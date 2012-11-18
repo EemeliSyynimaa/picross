@@ -3,6 +3,7 @@
 import level
 
 from engine import scene
+from pyglet.window import mouse
 
 class Game(scene.Scene):
     """ The class that makes the game go on. """
@@ -26,7 +27,19 @@ class Game(scene.Scene):
         
     def init_resources(self):
         pass
-   
+    
+    def update(self, dt):
+        if self.level.check_victory_conditions():
+            print("GAME WON!")
+    
+    def on_mouse_press(self, x, y, button, modifiers):
+        if button == mouse.LEFT:
+            self.level.paint_tile(x, y)
+        elif button == mouse.RIGHT:
+            self.level.mark_tile(x, y)
+        elif button == mouse.MIDDLE:
+            self.level.clear_tile(x, y)
+            
     def on_draw(self):
         self.batch.draw()
         self.level.draw()

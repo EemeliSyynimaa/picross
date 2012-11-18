@@ -20,7 +20,7 @@ class Engine(pyglet.window.Window):
         pyglet.resource.reindex()
     
     def update(self, dt):
-        pass
+        self.scene_manager.update(dt)
     
     def run(self):
         pyglet.app.run()

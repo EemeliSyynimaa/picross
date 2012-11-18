@@ -6,31 +6,29 @@ from engine import scene
 from pyglet.window import mouse
 
 class Game(scene.Scene):
-    """ The class that makes the game go on. """
+    """ The main scene where most of the game is happening. """
 
-    def __init__(self, manager, path):
+    def __init__(self, manager, campaign, lvl_num, 
+                 screen_width, screen_height):
         super(Game, self).__init__(manager)
         
-        self.level = level.Level(path, self.resource_manager, 1280/2, 720/2)
+        self.level = level.Level(campaign, lvl_num, self.resource_manager, 
+                                 screen_width/2, screen_height/2)
         self.init_resources()
         
-        #
-        #
-        #
-        #
-        # TODO
-        #
-        #
-        # Eriytä PLAYGRID ja ORIGINALGRID omiin luokkiinsa!!
-        #
-        # WILL DO!
+        self.campaign = campaign
+        self.lvl_num = lvl_num
+        self.screen_width = screen_width
+        self.screen_height = screen_height
         
     def init_resources(self):
         pass
     
     def update(self, dt):
         if self.level.check_victory_conditions():
-            print("GAME WON!")
+            self.manager.activate_scene("game_won", self.campaign, 
+                                        self.lvl_num, self.screen_width,
+                                        self.screen_height)
     
     def on_mouse_press(self, x, y, button, modifiers):
         if button == mouse.LEFT:

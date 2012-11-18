@@ -5,9 +5,9 @@ from engine.text import Label
 class Level(object):
     """ This class holds the grid of the game. """
 
-    def __init__(self, campaign, lvl_num, gfx, x=0, y=0):
+    def __init__(self, campaign, lvl_num, res, x=0, y=0):
         self.path = "levels\\" + campaign + "\\" + str(lvl_num) + ".dat"
-        self.gfx = gfx
+        self.res = res
         self.tile_size = 32
         self.x = x
         self.y = y
@@ -30,9 +30,9 @@ class Level(object):
         self.init_col_labels()
         
     def init_resources(self):
-        self.gfx.load_image('tile_painted.png')
-        self.gfx.load_image('tile_empty.png')
-        self.gfx.load_image('tile_marked.png')
+        self.res.load_image('tile_painted.png')
+        self.res.load_image('tile_empty.png')
+        self.res.load_image('tile_marked.png')
         
     def init_goal_grid(self):
         try:
@@ -216,9 +216,9 @@ class Level(object):
                 blit_y = self.y - y * self.tile_size - self.tile_size
                 
                 if self.play_grid[y][x] == "#":
-                    self.gfx["tile_painted"].blit(blit_x, blit_y)
+                    self.res.gfx["tile_painted"].blit(blit_x, blit_y)
                 elif self.play_grid[y][x] == '-':
-                    self.gfx["tile_empty"].blit(blit_x, blit_y )
+                    self.res.gfx["tile_empty"].blit(blit_x, blit_y )
                 elif self.play_grid[y][x] == 'X':
-                    self.gfx["tile_marked"].blit(blit_x, blit_y )
+                    self.res.gfx["tile_marked"].blit(blit_x, blit_y )
         

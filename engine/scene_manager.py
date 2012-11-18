@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class SceneManager(object):
     """ This class handles the scenes in the game. """
 

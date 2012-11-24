@@ -12,17 +12,34 @@ class Game(scene.Scene):
                  screen_width, screen_height):
         super(Game, self).__init__(manager)
         
-        self.level = level.Level(campaign, lvl_num, self.res, 
-                                 screen_width/2, screen_height/2)
-        self.init_resources()
-        
         self.campaign = campaign
         self.lvl_num = lvl_num
         self.screen_width = screen_width
         self.screen_height = screen_height
         
+        self.init_level()
+        self.init_resources()
+        
     def init_resources(self):
         pass
+    
+    def init_level(self):
+        
+        self.init_level_size()
+        self.level = level.Level(self.campaign, self.lvl_num, self.res, 
+                                 self.screen_width/2, self.screen_height/2,
+                                 self.level_size, self.level_size)
+                
+    
+    def init_level_size(self):
+        self.level_size = self.screen_width
+        
+        if self.screen_width > self.screen_height:
+            self.level_size = self.screen_height
+        
+        # 0.90 so it doesnt take the whole screen.
+        # And 30 % for numeric instructions.
+        self.level_size = int(self.level_size * 0.95 * 0.70)
     
     def update(self, dt):
         if self.level.check_victory_conditions():

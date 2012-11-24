@@ -1,16 +1,20 @@
 # -*- coding: utf-8 -*-
 
+from engine.graphics import scale_image
 from engine.text import Label
 
 class Level(object):
     """ This class holds the grid of the game. """
 
-    def __init__(self, campaign, lvl_num, res, x=0, y=0):
+    def __init__(self, campaign, lvl_num, res, x=0, y=0, 
+                 max_width=0, max_height=0):
         self.path = "levels\\" + campaign + "\\" + str(lvl_num) + ".dat"
         self.res = res
-        self.tile_size = 32
+        self.tile_size = 0
         self.x = x
         self.y = y
+        self.max_width = max_width
+        self.max_height = max_height
         
         self.goal_grid = []
         self.play_grid = []
@@ -23,6 +27,7 @@ class Level(object):
         self.init_resources()
         self.init_goal_grid()
         self.init_play_grid()
+        self.init_tile_size()
         self.init_position()
         self.init_row_numbers()
         self.init_col_numbers()
@@ -33,6 +38,7 @@ class Level(object):
         self.res.load_image('tile_painted.png')
         self.res.load_image('tile_empty.png')
         self.res.load_image('tile_marked.png')
+        self.res.load_image('tile_mistake.png')
         
     def init_goal_grid(self):
         try:
@@ -66,7 +72,43 @@ class Level(object):
                 new_line.append('-')
                 
             self.play_grid.append(new_line)
+
+        
+    def init_tile_size(self):
+        self.width = len(self.play_grid[0])
+        self.height = len(self.play_grid)
+        
+        tile_w = self.max_width/self.width
+        tile_h = self.max_height/self.height
+        
+        if tile_w > tile_h:
+            self.tile_size = tile_h
+        else:
+            self.tile_size = tile_w
             
+        self.res.gfx["tile_painted"] = scale_image(self.res.gfx["tile_painted"], 
+                                                   self.tile_size, 
+                                                   self.tile_size)
+        
+        self.res.gfx["tile_marked"] = scale_image(self.res.gfx["tile_marked"], 
+                                                  self.tile_size, 
+                                                  self.tile_size)
+                
+        self.res.gfx["tile_empty"] = scale_image(self.res.gfx["tile_empty"], 
+                                                 self.tile_size, 
+                                                 self.tile_size)
+        
+    def init_position(self):
+        # First lets count the grid size
+        self.width_in_pixels = self.width * self.tile_size
+        self.height_in_pixels = self.height * self.tile_size
+        # Then add the numeric instructions
+        self.col_labels_in_pixels = self.height/2 * self.tile_size
+        self.row_labels_in_pixels = self.width/2 * self.tile_size
+
+        self.x = self.x - (self.width_in_pixels - self.row_labels_in_pixels) / 2
+        self.y = self.y + (self.height_in_pixels - self.col_labels_in_pixels) / 2
+    
     def init_row_numbers(self):
         for row in self.goal_grid:
             new_line = []
@@ -103,16 +145,7 @@ class Level(object):
         for i in range(0, len(consecutive_tiles)):
             if consecutive_tiles[i]:
                 self.col_numbers[i].append(consecutive_tiles[i])
-                
-    def init_position(self):
-        self.width = len(self.play_grid[0])
-        self.height = len(self.play_grid)
-        self.width_in_pixels = self.width * self.tile_size
-        self.height_in_pixels = self.height * self.tile_size
-        
-        self.x = self.x - self.width_in_pixels / 2
-        self.y = self.y + self.height_in_pixels / 2
-        
+
     def init_row_labels(self):
         temp_y = self.y - self.tile_size/2
         for row in self.row_numbers:
@@ -152,13 +185,13 @@ class Level(object):
             
             self.col_labels.append(new_line)
             temp_x += self.tile_size
-
-    def reset(self):
-        pass
     
     def paint_tile(self, x, y):
         if self.is_mouse_on_grid(x, y):
-            self.change_tile_value(x, y, '#')
+            if self.is_tile_type(x, y, '#'):
+                self.change_tile_value(x, y, '#')
+            else:
+                self.change_tile_value(x, y, 'E')
             
     def mark_tile(self, x, y):
         if self.is_mouse_on_grid(x, y):
@@ -181,7 +214,18 @@ class Level(object):
         temp_y = self.y - y
         temp_x = x - self.x
 
-        self.play_grid[temp_y/32][temp_x/32] = value
+        self.play_grid[temp_y/self.tile_size][temp_x/self.tile_size] = value
+        
+    def is_tile_type(self, x, y, value):
+        
+        return_value = False
+        temp_y = self.y - y
+        temp_x = x - self.x
+        
+        if self.goal_grid[temp_y/self.tile_size][temp_x/self.tile_size] == value:
+            return_value = True
+        
+        return return_value
         
     def check_victory_conditions(self):
         conditions_met = True
@@ -218,7 +262,9 @@ class Level(object):
                 if self.play_grid[y][x] == "#":
                     self.res.gfx["tile_painted"].blit(blit_x, blit_y)
                 elif self.play_grid[y][x] == '-':
-                    self.res.gfx["tile_empty"].blit(blit_x, blit_y )
+                    self.res.gfx["tile_empty"].blit(blit_x, blit_y)
                 elif self.play_grid[y][x] == 'X':
-                    self.res.gfx["tile_marked"].blit(blit_x, blit_y )
+                    self.res.gfx["tile_marked"].blit(blit_x, blit_y)
+                elif self.play_grid[y][x] == 'E':
+                    self.res.gfx["tile_mistake"].blit(blit_x, blit_y)
         

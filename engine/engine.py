@@ -3,7 +3,6 @@
 import pyglet
 
 import scene_manager
-import resource_manager
 
 class Engine(pyglet.window.Window):
     """ The main engine class. """

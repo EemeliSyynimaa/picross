@@ -28,7 +28,8 @@ class Game(scene.Scene):
         self.init_level_size()
         self.level = level.Level(self.campaign, self.lvl_num, self.res, 
                                  self.screen_width/2, self.screen_height/2,
-                                 self.level_size, self.level_size)
+                                 self.level_size, self.level_size,
+                                 self.batch)
                 
     
     def init_level_size(self):
@@ -57,4 +58,3 @@ class Game(scene.Scene):
             
     def on_draw(self):
         self.batch.draw()
-        self.level.draw()

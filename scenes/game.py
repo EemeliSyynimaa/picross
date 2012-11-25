@@ -38,9 +38,7 @@ class Game(scene.Scene):
         if self.screen_width > self.screen_height:
             self.level_size = self.screen_height
         
-        # 0.90 so it doesnt take the whole screen.
-        # And 30 % for numeric instructions.
-        self.level_size = int(self.level_size * 0.95 * 0.70)
+        self.level_size = int(self.level_size)
     
     def update(self, dt):
         if self.level.check_victory_conditions():

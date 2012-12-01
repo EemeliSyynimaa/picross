@@ -3,6 +3,7 @@
 import level
 
 from engine import scene
+from engine import text
 from engine.graphics import scale_image
 from pyglet.window import mouse
 
@@ -20,8 +21,21 @@ class Game(scene.Scene):
         
         self.init_level()
         self.init_resources()
+        self.init_mistakes()
         
         self.resize_background()
+    
+    def init_mistakes(self):
+        self.mistakes = 0
+        self.max_mistakes = 5
+        self.mistakes_label = text.Label("Mistakes: " +str(self.mistakes) \
+                                         + "/" + str(self.max_mistakes),
+                                         font_name='Verdana',
+                                         font_size=16,
+                                         x=0, y=self.screen_height,
+                                         anchor_x='left', anchor_y='top',
+                                         batch=self.batch)
+
         
     def init_resources(self):
         self.res.load_image("background.png", "levels\\"+self.campaign)
@@ -64,6 +78,16 @@ class Game(scene.Scene):
         
         print(self.res.gfx['background'].width)
         print(self.res.gfx['background'].height)
+        
+    def add_to_mistakes(self, amount):
+        self.mistakes = self.mistakes + amount
+        
+        # Lets see if we are done
+        if self.mistakes >= self.max_mistakes:
+            self.manager.activate_scene('game_lost')
+        else:
+            self.mistakes_label.text = str(self.mistakes) + "/" + \
+            str(self.max_mistakes)
     
     def update(self, dt):
         if self.level.check_victory_conditions():
@@ -73,7 +97,8 @@ class Game(scene.Scene):
     
     def on_mouse_press(self, x, y, button, modifiers):
         if button == mouse.LEFT:
-            self.level.paint_tile(x, y)
+            if not self.level.paint_tile(x, y):
+                self.add_to_mistakes(1)
         elif button == mouse.RIGHT:
             self.level.mark_tile(x, y)
             

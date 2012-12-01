@@ -214,11 +214,16 @@ class Level(object):
             temp_x += self.tile_size
     
     def paint_tile(self, x, y):
+        return_value = False
+        
         if self.is_mouse_on_grid(x, y):
             if self.is_tile_type(x, y, '#'):
                 self.change_tile_value(x, y, '#')
+                return_value = True
             else:
                 self.change_tile_value(x, y, 'E')
+        
+        return return_value
             
     def mark_tile(self, x, y):
         if self.is_mouse_on_grid(x, y):

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 from pyglet.gl import *
 
 def scale_image(image, width, height):

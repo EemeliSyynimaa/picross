@@ -26,5 +26,5 @@ class Engine(pyglet.window.Window):
         
     def on_draw(self):
         self.clear()
-        self.fps.draw()
         self.scene_manager.on_draw()
+        self.fps.draw()
